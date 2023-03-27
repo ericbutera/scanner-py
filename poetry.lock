@@ -151,6 +151,17 @@ files = [
 ]
 
 [[package]]
+name = "asyncpool"
+version = "1.0"
+description = "Async coroutine worker pool"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "asyncpool-1.0.tar.gz", hash = "sha256:1a27143cd66fe157df40038b5f0b4a4225d8e6e9402c4b6545c9e1ac8f6ab61a"},
+]
+
+[[package]]
 name = "attrs"
 version = "22.2.0"
 description = "Classes Without Boilerplate"
@@ -801,4 +812,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "2b0b3c11303d3b0e2966c02021332ae7b4236b281a4d935cdcb2023f1a1ac4ac"
+content-hash = "e909bdb0f21b3bf22ecf4053afdb5f260d01759d7ba86b32973fda7283891e98"

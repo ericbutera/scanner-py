@@ -5,7 +5,8 @@ export
 
 IMAGE_NAME=scanner-py
 IMAGE_REPO=ghcr.io/ericbutera
-IMAGE_TAG=latest
+IMAGE_TAG=v0.0.1
+# IMAGE_TAG=latest
 
 .DEFAULT_GOAL := help
 
@@ -35,6 +36,19 @@ image-buildx: ## Build multiarch & push to container registry
 image-run: ## Run docker image
 	docker run -it --rm ${IMAGE_REPO}/${IMAGE_NAME}:${IMAGE_TAG}
 
+
 .PHONY: run
-run: ## Run the application
+run: ## Run the serial demo
 	poetry run python main.py
+
+.PHONY: run-worker-pool
+run-worker-pool: ## Run the worker pool demo
+	poetry run python worker_pool.py
+
+.PHONY: run-async
+run-async: ## Run the async demo
+	poetry run python async.py
+
+.PHONY: run-async-pool
+run-async-pool: ## Run the async pool demo
+	poetry run python async_pool.py

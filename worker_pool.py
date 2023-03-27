@@ -1,6 +1,7 @@
 """test"""
 import os
 import time
+from multiprocessing import Pool  # , active_children
 
 import requests
 from cloudevents.conversion import to_json
@@ -8,19 +9,34 @@ from cloudevents.conversion import to_json
 from shared import (ENDPOINT_URL, EVENT_RECEIVER_URL, TIMEOUT, VERIFY_SSL,
                     bucket_to_event, list_buckets)
 
+MAX_PROC = 20
+
 
 def main():
     """test"""
     print("start thread test")
     start = time.perf_counter()
+    pool = Pool(processes=MAX_PROC)
 
     for bucket in list_buckets(ENDPOINT_URL):
-        ev = bucket_to_event(bucket)
-        emit(ev)
+        pool.apply_async(_process, args=(bucket,))
+        # job = pool.apply_async(_process, args=(bucket,))
+        # print(f"jobs: {len(active_children())} job {job}")
+        # res = job.get(timeout=20)
+
+    pool.close()
+    pool.join()
+
+    # TODO: alert on failed jobs
 
     end = time.perf_counter()
     delta = end - start
     print("time: ", delta)
+
+
+def _process(bucket):
+    ev = bucket_to_event(bucket)
+    return emit(ev)
 
 
 def emit(event):
@@ -38,7 +54,7 @@ def emit(event):
         verify=VERIFY_SSL,
         timeout=TIMEOUT
     )
-    #  if resp.status_code == 200
+    # if resp.status_code == 200
     print("body ", res.text)
     return res.text
 
